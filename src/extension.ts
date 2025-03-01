@@ -1,24 +1,77 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { EnvironmentManager, SqlxCommandHandler, SqlxTreeDataProvider } from './lib';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "sqlx-migration-manager" is now active!');
+    // Initialize environment manager
+    const environmentManager = new EnvironmentManager(context.globalState);
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    const disposable = vscode.commands.registerCommand('sqlx-migration-manager.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World from sqlx-migration-manager!');
+    // Initialize command handler
+    const commandHandler = new SqlxCommandHandler(environmentManager);
+
+    // Initialize tree view
+    const treeDataProvider = new SqlxTreeDataProvider(environmentManager);
+    vscode.window.registerTreeDataProvider('sqlxManager', treeDataProvider);
+
+    // Register commands
+    context.subscriptions.push(
+        vscode.commands.registerCommand('sqlx-manager.checkMigrationStatus', () =>
+            commandHandler.checkMigrationStatus(),
+        ),
+
+        vscode.commands.registerCommand('sqlx-manager.runMigrations', () =>
+            commandHandler.runMigrations(),
+        ),
+
+        vscode.commands.registerCommand('sqlx-manager.revertMigration', () =>
+            commandHandler.revertMigration(),
+        ),
+
+        vscode.commands.registerCommand('sqlx-manager.createMigration', () =>
+            commandHandler.createMigration(),
+        ),
+
+        vscode.commands.registerCommand('sqlx-manager.addEnvironment', () =>
+            commandHandler.addEnvironment().then(() => treeDataProvider.refresh()),
+        ),
+
+        vscode.commands.registerCommand('sqlx-manager.editEnvironment', (envItem) =>
+            commandHandler.editEnvironment(envItem.id).then(() => treeDataProvider.refresh()),
+        ),
+
+        vscode.commands.registerCommand('sqlx-manager.deleteEnvironment', (envItem) =>
+            commandHandler.deleteEnvironment(envItem.id).then(() => treeDataProvider.refresh()),
+        ),
+
+        vscode.commands.registerCommand('sqlx-manager.selectEnvironment', (envItem) =>
+            commandHandler.selectEnvironment(envItem.id).then(() => treeDataProvider.refresh()),
+        ),
+    );
+
+    // Status bar item for current environment
+    const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+    statusBarItem.command = 'sqlx-manager.selectEnvironment';
+    context.subscriptions.push(statusBarItem);
+
+    // Update status bar with current environment
+    const updateStatusBar = () => {
+        const currentEnv = environmentManager.getCurrentEnvironment();
+        if (currentEnv) {
+            statusBarItem.text = `$(database) SQLX: ${currentEnv.name}`;
+            statusBarItem.tooltip = `Current SQLX Environment: ${currentEnv.name}\nDatabase URL: ${currentEnv.databaseUrl}`;
+            statusBarItem.show();
+        } else {
+            statusBarItem.text = '$(database) SQLX: No Environment';
+            statusBarItem.tooltip = 'No SQLX environment selected';
+            statusBarItem.show();
+        }
+    };
+
+    environmentManager.onEnvironmentChanged(() => {
+        updateStatusBar();
+        treeDataProvider.refresh();
     });
 
-    context.subscriptions.push(disposable);
+    updateStatusBar();
 }
 
 // This method is called when your extension is deactivated
