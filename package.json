@@ -3,6 +3,9 @@
     "displayName": "sqlx-migration-manager",
     "description": "Manage SQLX migrations directly from VS Code with multi-environment support",
     "version": "0.0.1",
+    "repository": {
+        "url": "https://github.com/DrewCCannedy/sqlx-migration-manager"
+    },
     "engines": {
         "vscode": "^1.97.0"
     },
