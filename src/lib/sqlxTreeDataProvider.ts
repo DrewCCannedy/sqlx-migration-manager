@@ -17,7 +17,7 @@ export class EnvironmentTreeItem extends vscode.TreeItem {
 
         // Add command to select this environment when clicked
         this.command = {
-            command: 'sqlx-manager.selectEnvironment',
+            command: 'sqlxManager.selectEnvironment',
             title: 'Select Environment',
             arguments: [{ id }],
         };
@@ -81,7 +81,7 @@ export class SqlxTreeDataProvider implements vscode.TreeDataProvider<Environment
         );
 
         item.command = {
-            command: 'sqlx-manager.addEnvironment',
+            command: 'sqlxManager.addEnvironment',
             title: 'Add Environment',
         };
 

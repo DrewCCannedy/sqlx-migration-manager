@@ -14,99 +14,100 @@
     "contributes": {
         "commands": [
             {
-                "command": "sqlx-manager.checkMigrationStatus",
-                "title": "SQLX: Check Migration Status",
+                "command": "sqlxManager.checkMigrationStatus",
+                "title": "Check Migration Status",
                 "icon": "$(info)"
             },
             {
-                "command": "sqlx-manager.runMigrations",
-                "title": "SQLX: Run Pending Migrations",
+                "command": "sqlxManager.runMigrations",
+                "title": "Run Pending Migrations",
                 "icon": "$(play)"
             },
             {
-                "command": "sqlx-manager.revertMigration",
-                "title": "SQLX: Revert Last Migration",
+                "command": "sqlxManager.revertMigration",
+                "title": "Revert Last Migration",
                 "icon": "$(debug-step-back)"
             },
             {
-                "command": "sqlx-manager.createMigration",
-                "title": "SQLX: Create New Migration",
+                "command": "sqlxManager.createMigration",
+                "title": "New Migration",
                 "icon": "$(add)"
             },
             {
-                "command": "sqlx-manager.addEnvironment",
-                "title": "SQLX: Add Database Environment"
+                "command": "sqlxManager.addEnvironment",
+                "title": "New Database Environment",
+                "icon": "$(file-directory-create)"
             },
             {
-                "command": "sqlx-manager.editEnvironment",
-                "title": "SQLX: Edit Database Environment",
+                "command": "sqlxManager.editEnvironment",
+                "title": "Edit Database Environment",
                 "icon": "$(edit)"
             },
             {
-                "command": "sqlx-manager.deleteEnvironment",
-                "title": "SQLX: Delete Database Environment",
+                "command": "sqlxManager.deleteEnvironment",
+                "title": "Delete Database Environment",
                 "icon": "$(trash)"
             },
             {
-                "command": "sqlx-manager.selectEnvironment",
-                "title": "SQLX: Select Current Environment"
+                "command": "sqlxManager.selectEnvironment",
+                "title": "Select Current Environment"
             }
         ],
         "viewsContainers": {
             "activitybar": [
                 {
-                    "id": "sqlx-explorer",
-                    "title": "SQLX Explorer",
+                    "id": "sqlxManager",
+                    "title": "SQLX Manager",
                     "icon": "$(database)"
                 }
             ]
         },
         "views": {
-            "sqlx-explorer": [
+            "sqlxManager": [
                 {
                     "id": "sqlxManager",
-                    "name": "SQLX Manager"
+                    "name": ""
                 }
             ]
         },
         "menus": {
             "view/title": [
                 {
-                    "command": "sqlx-manager.addEnvironment",
+                    "command": "sqlxManager.addEnvironment",
                     "when": "view == sqlxManager",
                     "group": "navigation"
                 },
                 {
-                    "command": "sqlx-manager.checkMigrationStatus",
-                    "when": "view == sqlxManager",
+                    "command": "sqlxManager.checkMigrationStatus",
+                    "when": "view == sqlxManager && sqlxManager.hasCurrentEnvironment",
                     "group": "navigation@1"
                 },
                 {
-                    "command": "sqlx-manager.runMigrations",
+                    "command": "sqlxManager.runMigrations",
                     "when": "view == sqlxManager && sqlxManager.hasCurrentEnvironment",
                     "group": "navigation@2"
                 },
                 {
-                    "command": "sqlx-manager.revertMigration",
+                    "command": "sqlxManager.revertMigration",
                     "when": "view == sqlxManager && sqlxManager.hasCurrentEnvironment",
                     "group": "navigation@3"
                 },
                 {
-                    "command": "sqlx-manager.createMigration",
+                    "command": "sqlxManager.createMigration",
                     "when": "view == sqlxManager",
                     "group": "navigation@4"
                 }
             ],
             "view/item/context": [
                 {
-                    "command": "sqlx-manager.editEnvironment",
+                    "command": "sqlxManager.editEnvironment",
                     "when": "viewItem == environment",
-                    "group": "inline"
+                    "group": "inline@1"
                 },
                 {
-                    "command": "sqlx-manager.deleteEnvironment",
+                    "command": "sqlxManager.deleteEnvironment",
                     "when": "viewItem == environment",
-                    "group": "inline"
+                    "group": "inline@2"
                 }
             ]
         }

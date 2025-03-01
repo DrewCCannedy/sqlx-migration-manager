@@ -10,8 +10,8 @@ export interface Environment {
 export class EnvironmentManager {
     private environments: Environment[] = [];
     private currentEnvironmentId: string | undefined;
-    private readonly ENVIRONMENTS_KEY = 'sqlx-manager.environments';
-    private readonly CURRENT_ENV_KEY = 'sqlx-manager.currentEnvironment';
+    private readonly ENVIRONMENTS_KEY = 'sqlxManager.environments';
+    private readonly CURRENT_ENV_KEY = 'sqlxManager.currentEnvironment';
     private environmentChangedEmitter = new vscode.EventEmitter<void>();
 
     constructor(private storage: vscode.Memento) {
