@@ -2,8 +2,8 @@
 
 All notable changes to the "sqlx-migration-manager" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+Following the style of [Keep a Changelog](http://keepachangelog.com/).
 
-## [Unreleased]
+## [1.0.0]
 
 - Initial release

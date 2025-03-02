@@ -47,3 +47,7 @@ First, launch the extension. Then, add the project folder to the new window's wo
 To test running migrations against a "real" database, create a sqlite database at the root path by creating a file named `test.sqlite`.
 
 Create a new environment pointing to `sqlite://./test.sqlite` (the created file) and test any of the commands.
+
+### Packaging the extension
+
+To package the extension for use in VsCode, run `vsce package`. Vsce will need to be installed globally `npm install -g @vscode/vsce`.
