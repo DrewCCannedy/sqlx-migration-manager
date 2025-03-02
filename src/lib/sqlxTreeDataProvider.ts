@@ -82,8 +82,10 @@ export class SqlxTreeDataProvider implements vscode.TreeDataProvider<Environment
 
         item.command = {
             command: 'sqlxManager.addEnvironment',
-            title: 'Add Environment',
+            title: 'New Database Environment',
         };
+
+        item.tooltip = 'New Database Environment';
 
         return item;
     }
