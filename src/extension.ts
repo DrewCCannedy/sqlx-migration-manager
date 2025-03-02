@@ -35,15 +35,15 @@ export function activate(context: vscode.ExtensionContext) {
         ),
 
         vscode.commands.registerCommand('sqlxManager.editEnvironment', (envItem) =>
-            commandHandler.editEnvironment(envItem.id).then(() => treeDataProvider.refresh()),
+            commandHandler.editEnvironment(envItem?.id).then(() => treeDataProvider.refresh()),
         ),
 
         vscode.commands.registerCommand('sqlxManager.deleteEnvironment', (envItem) =>
-            commandHandler.deleteEnvironment(envItem.id).then(() => treeDataProvider.refresh()),
+            commandHandler.deleteEnvironment(envItem?.id).then(() => treeDataProvider.refresh()),
         ),
 
         vscode.commands.registerCommand('sqlxManager.selectEnvironment', (envItem) =>
-            commandHandler.selectEnvironment(envItem.id).then(() => treeDataProvider.refresh()),
+            commandHandler.selectEnvironment(envItem?.id).then(() => treeDataProvider.refresh()),
         ),
     );
 

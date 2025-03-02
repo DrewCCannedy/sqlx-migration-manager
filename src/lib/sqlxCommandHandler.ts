@@ -96,7 +96,12 @@ export class SqlxCommandHandler {
         vscode.window.showInformationMessage(`Environment "${name}" added successfully.`);
     }
 
-    async editEnvironment(envId: string): Promise<void> {
+    async editEnvironment(envId?: string): Promise<void> {
+        envId = await this.getEnvInputIfNull(envId);
+        if (!envId) {
+            return;
+        }
+
         const env = this.environmentManager.getEnvironment(envId);
         if (!env) {
             return;
@@ -130,7 +135,12 @@ export class SqlxCommandHandler {
         vscode.window.showInformationMessage(`Environment "${name}" updated successfully.`);
     }
 
-    async deleteEnvironment(envId: string): Promise<void> {
+    async deleteEnvironment(envId?: string): Promise<void> {
+        envId = await this.getEnvInputIfNull(envId);
+        if (!envId) {
+            return;
+        }
+
         const env = this.environmentManager.getEnvironment(envId);
         if (!env) {
             return;
@@ -151,30 +161,10 @@ export class SqlxCommandHandler {
     }
 
     async selectEnvironment(envId?: string): Promise<void> {
+        envId = await this.getEnvInputIfNull(envId);
+
         if (!envId) {
-            const environments = this.environmentManager.getAllEnvironments();
-            if (environments.length === 0) {
-                vscode.window.showWarningMessage(
-                    'No environments configured. Please add an environment first.',
-                );
-                return;
-            }
-
-            const items = environments.map((env) => ({
-                label: env.name,
-                description: env.databaseUrl,
-                id: env.id,
-            }));
-
-            const selected = await vscode.window.showQuickPick(items, {
-                placeHolder: 'Select an environment',
-            });
-
-            if (!selected) {
-                return;
-            }
-
-            envId = selected.id;
+            return;
         }
 
         await this.environmentManager.setCurrentEnvironment(envId);
@@ -220,5 +210,38 @@ export class SqlxCommandHandler {
         }
 
         return this.terminal;
+    }
+
+    private async getEnvInputIfNull(envId?: string) {
+        if (envId) {
+            return envId;
+        }
+
+        const environments = this.environmentManager.getAllEnvironments();
+        if (environments.length === 0) {
+            vscode.window.showWarningMessage(
+                'No database environments configured. Please create one first.',
+            );
+            return;
+        }
+
+        const items = environments.map((env) => ({
+            label: env.name,
+            description: env.databaseUrl,
+            id: env.id,
+        }));
+
+        const selected = await vscode.window.showQuickPick(items, {
+            placeHolder: 'Select a databse environment',
+        });
+
+        if (!selected) {
+            vscode.window.showWarningMessage(
+                'No database environment selected. Please select one first.',
+            );
+            return;
+        }
+
+        return selected.id;
     }
 }
