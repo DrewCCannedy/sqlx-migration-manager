@@ -48,11 +48,8 @@ export class SqlxTreeDataProvider implements vscode.TreeDataProvider<Environment
 
         // Set context for menu visibility
         if (environments.length === 0) {
-            vscode.commands.executeCommand('setContext', 'sqlxManager.hasEnvironments', false);
             return [this.getNoEnvironmentsItem()];
         }
-
-        vscode.commands.executeCommand('setContext', 'sqlxManager.hasEnvironments', true);
 
         // Also set context for if there's a current environment selected
         vscode.commands.executeCommand(
