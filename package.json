@@ -19,41 +19,49 @@
             {
                 "command": "sqlxManager.checkMigrationStatus",
                 "title": "Check Migration Status",
-                "icon": "$(info)"
+                "icon": "$(info)",
+                "category": "SQLX Manager"
             },
             {
                 "command": "sqlxManager.runMigrations",
                 "title": "Run Pending Migrations",
-                "icon": "$(play)"
+                "icon": "$(play)",
+                "category": "SQLX Manager"
             },
             {
                 "command": "sqlxManager.revertMigration",
                 "title": "Revert Last Migration",
-                "icon": "$(debug-step-back)"
+                "icon": "$(debug-step-back)",
+                "category": "SQLX Manager"
             },
             {
                 "command": "sqlxManager.createMigration",
                 "title": "New Migration",
-                "icon": "$(add)"
+                "icon": "$(add)",
+                "category": "SQLX Manager"
             },
             {
                 "command": "sqlxManager.addEnvironment",
                 "title": "New Database Environment",
-                "icon": "$(file-directory-create)"
+                "icon": "$(file-directory-create)",
+                "category": "SQLX Manager"
             },
             {
                 "command": "sqlxManager.editEnvironment",
                 "title": "Edit Database Environment",
-                "icon": "$(edit)"
+                "icon": "$(edit)",
+                "category": "SQLX Manager"
             },
             {
                 "command": "sqlxManager.deleteEnvironment",
                 "title": "Delete Database Environment",
-                "icon": "$(trash)"
+                "icon": "$(trash)",
+                "category": "SQLX Manager"
             },
             {
                 "command": "sqlxManager.selectEnvironment",
-                "title": "Select Current Environment"
+                "title": "Select Database Environment",
+                "category": "SQLX Manager"
             }
         ],
         "viewsContainers": {
