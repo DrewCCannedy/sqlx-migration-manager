@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { EnvironmentManager } from '../lib/environmentManager';
 import {
-    COMMAND_ADD_ENVIRONMENT,
+    COMMAND_CREATE_ENVIRONMENT,
     COMMAND_HAS_CURRENT_ENVIRONMENT,
     COMMAND_SELECT_ENVIRONMENT,
 } from './constants';
@@ -79,7 +79,7 @@ export class SqlxTreeDataProvider implements vscode.TreeDataProvider<Environment
         );
 
         item.command = {
-            command: COMMAND_ADD_ENVIRONMENT,
+            command: COMMAND_CREATE_ENVIRONMENT,
             title: 'New Database Environment',
         };
 

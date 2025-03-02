@@ -41,7 +41,7 @@
                 "category": "SQLX Manager"
             },
             {
-                "command": "sqlxManager.addEnvironment",
+                "command": "sqlxManager.createEnvironment",
                 "title": "New Database Environment",
                 "icon": "$(file-directory-create)",
                 "category": "SQLX Manager"
@@ -84,7 +84,7 @@
         "menus": {
             "view/title": [
                 {
-                    "command": "sqlxManager.addEnvironment",
+                    "command": "sqlxManager.createEnvironment",
                     "when": "view == sqlxManager",
                     "group": "navigation"
                 },

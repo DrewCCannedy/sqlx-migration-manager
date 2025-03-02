@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { EnvironmentManager, SqlxCommandHandler, SqlxTreeDataProvider } from './lib';
 import {
-    COMMAND_ADD_ENVIRONMENT,
+    COMMAND_CREATE_ENVIRONMENT,
     COMMAND_CHECK_MIGRATION_STATUS,
     COMMAND_CREATE_MIGRATION,
     COMMAND_DELETE_ENVIRONMENT,
@@ -43,8 +43,8 @@ export function activate(context: vscode.ExtensionContext) {
             commandHandler.createMigration(),
         ),
 
-        vscode.commands.registerCommand(COMMAND_ADD_ENVIRONMENT, () =>
-            commandHandler.addEnvironment().then(() => treeDataProvider.refresh()),
+        vscode.commands.registerCommand(COMMAND_CREATE_ENVIRONMENT, () =>
+            commandHandler.createEnvironment().then(() => treeDataProvider.refresh()),
         ),
 
         vscode.commands.registerCommand(COMMAND_EDIT_ENVIRONMENT, (envItem) =>

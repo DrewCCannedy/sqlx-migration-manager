@@ -67,7 +67,7 @@ export class SqlxCommandHandler {
         terminal.show();
     }
 
-    async addEnvironment(): Promise<void> {
+    async createEnvironment(): Promise<void> {
         const name = await vscode.window.showInputBox({
             placeHolder: 'development',
             prompt: 'Enter a name for the environment',
@@ -92,8 +92,8 @@ export class SqlxCommandHandler {
             return;
         }
 
-        await this.environmentManager.addEnvironment({ name, databaseUrl });
-        vscode.window.showInformationMessage(`Environment "${name}" added successfully.`);
+        await this.environmentManager.createEnvironment({ name, databaseUrl });
+        vscode.window.showInformationMessage(`Environment "${name}" created successfully.`);
     }
 
     async editEnvironment(envId?: string): Promise<void> {
@@ -189,7 +189,7 @@ export class SqlxCommandHandler {
                 await this.selectEnvironment();
                 return this.environmentManager.getCurrentEnvironment();
             } else if (setEnv === createOption) {
-                await this.addEnvironment();
+                await this.createEnvironment();
                 if (this.environmentManager.getAllEnvironments().length === 1) {
                     await this.environmentManager.setCurrentEnvironment(
                         this.environmentManager.getAllEnvironments()[0].id,

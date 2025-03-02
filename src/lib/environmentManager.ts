@@ -39,7 +39,7 @@ export class EnvironmentManager {
         return this.environments.find((env) => env.id === this.currentEnvironmentId);
     }
 
-    async addEnvironment(env: Omit<Environment, 'id'>): Promise<Environment> {
+    async createEnvironment(env: Omit<Environment, 'id'>): Promise<Environment> {
         const newEnv: Environment = {
             id: uuidv4(),
             ...env,
