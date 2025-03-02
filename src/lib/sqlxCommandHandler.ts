@@ -177,16 +177,18 @@ export class SqlxCommandHandler {
     private async getRequiredEnvironment() {
         const env = this.environmentManager.getCurrentEnvironment();
         if (!env) {
+            const selectOption = 'Select Environment';
+            const createOption = 'Create Environment';
             const setEnv = await vscode.window.showWarningMessage(
                 'No environment selected. Would you like to select or create one now?',
-                'Select Environment',
-                'Create Environment',
+                selectOption,
+                createOption,
             );
 
-            if (setEnv === 'Select Environment') {
+            if (setEnv === selectOption) {
                 await this.selectEnvironment();
                 return this.environmentManager.getCurrentEnvironment();
-            } else if (setEnv === 'Create Environment') {
+            } else if (setEnv === createOption) {
                 await this.addEnvironment();
                 if (this.environmentManager.getAllEnvironments().length === 1) {
                     await this.environmentManager.setCurrentEnvironment(

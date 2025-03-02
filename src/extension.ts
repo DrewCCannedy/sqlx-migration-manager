@@ -1,5 +1,18 @@
 import * as vscode from 'vscode';
 import { EnvironmentManager, SqlxCommandHandler, SqlxTreeDataProvider } from './lib';
+import {
+    COMMAND_ADD_ENVIRONMENT,
+    COMMAND_CHECK_MIGRATION_STATUS,
+    COMMAND_CREATE_MIGRATION,
+    COMMAND_DELETE_ENVIRONMENT,
+    COMMAND_EDIT_ENVIRONMENT,
+    COMMAND_HAS_CURRENT_ENVIRONMENT,
+    COMMAND_REVERT_MIGRATION,
+    COMMAND_RUN_MIGRATIONS,
+    COMMAND_SELECT_ENVIRONMENT,
+    COMMAND_VIEW_EXTENSION,
+    EXTENSION_NAME,
+} from './lib/constants';
 
 export function activate(context: vscode.ExtensionContext) {
     // Initialize environment manager
@@ -10,46 +23,46 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Initialize tree view
     const treeDataProvider = new SqlxTreeDataProvider(environmentManager);
-    vscode.window.registerTreeDataProvider('sqlxManager', treeDataProvider);
+    vscode.window.registerTreeDataProvider(`${EXTENSION_NAME}`, treeDataProvider);
 
     // Register commands
     context.subscriptions.push(
-        vscode.commands.registerCommand('sqlxManager.checkMigrationStatus', () =>
+        vscode.commands.registerCommand(COMMAND_CHECK_MIGRATION_STATUS, () =>
             commandHandler.checkMigrationStatus(),
         ),
 
-        vscode.commands.registerCommand('sqlxManager.runMigrations', () =>
+        vscode.commands.registerCommand(COMMAND_RUN_MIGRATIONS, () =>
             commandHandler.runMigrations(),
         ),
 
-        vscode.commands.registerCommand('sqlxManager.revertMigration', () =>
+        vscode.commands.registerCommand(COMMAND_REVERT_MIGRATION, () =>
             commandHandler.revertMigration(),
         ),
 
-        vscode.commands.registerCommand('sqlxManager.createMigration', () =>
+        vscode.commands.registerCommand(COMMAND_CREATE_MIGRATION, () =>
             commandHandler.createMigration(),
         ),
 
-        vscode.commands.registerCommand('sqlxManager.addEnvironment', () =>
+        vscode.commands.registerCommand(COMMAND_ADD_ENVIRONMENT, () =>
             commandHandler.addEnvironment().then(() => treeDataProvider.refresh()),
         ),
 
-        vscode.commands.registerCommand('sqlxManager.editEnvironment', (envItem) =>
+        vscode.commands.registerCommand(COMMAND_EDIT_ENVIRONMENT, (envItem) =>
             commandHandler.editEnvironment(envItem?.id).then(() => treeDataProvider.refresh()),
         ),
 
-        vscode.commands.registerCommand('sqlxManager.deleteEnvironment', (envItem) =>
+        vscode.commands.registerCommand(COMMAND_DELETE_ENVIRONMENT, (envItem) =>
             commandHandler.deleteEnvironment(envItem?.id).then(() => treeDataProvider.refresh()),
         ),
 
-        vscode.commands.registerCommand('sqlxManager.selectEnvironment', (envItem) =>
+        vscode.commands.registerCommand(COMMAND_SELECT_ENVIRONMENT, (envItem) =>
             commandHandler.selectEnvironment(envItem?.id).then(() => treeDataProvider.refresh()),
         ),
     );
 
     // Status bar item for current environment
     const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-    statusBarItem.command = 'workbench.view.extension.sqlxManager';
+    statusBarItem.command = COMMAND_VIEW_EXTENSION;
     context.subscriptions.push(statusBarItem);
 
     // Update status bar with current environment
@@ -69,11 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
     const updateGuiHeader = () => {
         const currentEnv = environmentManager.getCurrentEnvironment();
 
-        vscode.commands.executeCommand(
-            'setContext',
-            'sqlxManager.hasCurrentEnvironment',
-            !!currentEnv,
-        );
+        vscode.commands.executeCommand('setContext', COMMAND_HAS_CURRENT_ENVIRONMENT, !!currentEnv);
     };
 
     environmentManager.onEnvironmentChanged(() => {

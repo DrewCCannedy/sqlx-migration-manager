@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { v4 as uuidv4 } from 'uuid';
+import { EXTENSION_NAME } from './constants';
 
 export interface Environment {
     id: string;
@@ -10,8 +11,8 @@ export interface Environment {
 export class EnvironmentManager {
     private environments: Environment[] = [];
     private currentEnvironmentId: string | undefined;
-    private readonly ENVIRONMENTS_KEY = 'sqlxManager.environments';
-    private readonly CURRENT_ENV_KEY = 'sqlxManager.currentEnvironment';
+    private readonly ENVIRONMENTS_KEY = `${EXTENSION_NAME}.environments`;
+    private readonly CURRENT_ENV_KEY = `${EXTENSION_NAME}.currentEnvironment`;
     private environmentChangedEmitter = new vscode.EventEmitter<void>();
 
     constructor(private storage: vscode.Memento) {

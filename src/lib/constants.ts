@@ -1,0 +1,11 @@
+export const EXTENSION_NAME = 'sqlxManager',
+    COMMAND_CHECK_MIGRATION_STATUS = `${EXTENSION_NAME}.checkMigrationStatus`,
+    COMMAND_RUN_MIGRATIONS = `${EXTENSION_NAME}.runMigrations`,
+    COMMAND_REVERT_MIGRATION = `${EXTENSION_NAME}.revertMigration`,
+    COMMAND_CREATE_MIGRATION = `${EXTENSION_NAME}.createMigration`,
+    COMMAND_ADD_ENVIRONMENT = `${EXTENSION_NAME}.addEnvironment`,
+    COMMAND_EDIT_ENVIRONMENT = `${EXTENSION_NAME}.editEnvironment`,
+    COMMAND_DELETE_ENVIRONMENT = `${EXTENSION_NAME}.deleteEnvironment`,
+    COMMAND_SELECT_ENVIRONMENT = `${EXTENSION_NAME}.selectEnvironment`,
+    COMMAND_HAS_CURRENT_ENVIRONMENT = `${EXTENSION_NAME}.hasCurrentEnvironment`,
+    COMMAND_VIEW_EXTENSION = `workbench.view.extension.${EXTENSION_NAME}`;

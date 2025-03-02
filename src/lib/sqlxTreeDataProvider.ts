@@ -1,5 +1,10 @@
 import * as vscode from 'vscode';
 import { EnvironmentManager } from '../lib/environmentManager';
+import {
+    COMMAND_ADD_ENVIRONMENT,
+    COMMAND_HAS_CURRENT_ENVIRONMENT,
+    COMMAND_SELECT_ENVIRONMENT,
+} from './constants';
 
 export class EnvironmentTreeItem extends vscode.TreeItem {
     constructor(
@@ -17,7 +22,7 @@ export class EnvironmentTreeItem extends vscode.TreeItem {
 
         // Add command to select this environment when clicked
         this.command = {
-            command: 'sqlxManager.selectEnvironment',
+            command: COMMAND_SELECT_ENVIRONMENT,
             title: 'Select Environment',
             arguments: [{ id }],
         };
@@ -52,11 +57,7 @@ export class SqlxTreeDataProvider implements vscode.TreeDataProvider<Environment
         }
 
         // Also set context for if there's a current environment selected
-        vscode.commands.executeCommand(
-            'setContext',
-            'sqlxManager.hasCurrentEnvironment',
-            !!currentEnv,
-        );
+        vscode.commands.executeCommand('setContext', COMMAND_HAS_CURRENT_ENVIRONMENT, !!currentEnv);
 
         return environments.map(
             (env) =>
@@ -78,7 +79,7 @@ export class SqlxTreeDataProvider implements vscode.TreeDataProvider<Environment
         );
 
         item.command = {
-            command: 'sqlxManager.addEnvironment',
+            command: COMMAND_ADD_ENVIRONMENT,
             title: 'New Database Environment',
         };
 
