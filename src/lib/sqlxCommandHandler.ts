@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { EnvironmentManager } from './environmentManager';
 
 export class SqlxCommandHandler {
+    private terminal: vscode.Terminal | null = null;
+
     constructor(private environmentManager: EnvironmentManager) {}
 
     async checkMigrationStatus(): Promise<void> {
@@ -10,7 +12,7 @@ export class SqlxCommandHandler {
             return;
         }
 
-        const terminal = vscode.window.createTerminal('SQLX Migration Status');
+        const terminal = this.getTerminal();
         terminal.sendText(`sqlx migrate info --database-url "${env.databaseUrl}"`);
         terminal.show();
     }
@@ -21,7 +23,7 @@ export class SqlxCommandHandler {
             return;
         }
 
-        const terminal = vscode.window.createTerminal('SQLX Run Migrations');
+        const terminal = this.getTerminal();
         terminal.sendText(`sqlx migrate run --database-url "${env.databaseUrl}"`);
         terminal.show();
     }
@@ -42,7 +44,7 @@ export class SqlxCommandHandler {
             return;
         }
 
-        const terminal = vscode.window.createTerminal('SQLX Revert Migration');
+        const terminal = this.getTerminal();
         terminal.sendText(`sqlx migrate revert --database-url "${env.databaseUrl}"`);
         terminal.show();
     }
@@ -60,7 +62,7 @@ export class SqlxCommandHandler {
             return;
         }
 
-        const terminal = vscode.window.createTerminal('SQLX Create Migration');
+        const terminal = this.getTerminal();
         terminal.sendText(`sqlx migrate add -r "${migrationName}"`);
         terminal.show();
     }
@@ -210,5 +212,13 @@ export class SqlxCommandHandler {
         }
 
         return env;
+    }
+
+    private getTerminal() {
+        if (!this.terminal) {
+            this.terminal = vscode.window.createTerminal('SQLX Manager');
+        }
+
+        return this.terminal;
     }
 }
