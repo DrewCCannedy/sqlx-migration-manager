@@ -15,9 +15,37 @@ export class EnvironmentManager {
     private readonly CURRENT_ENV_KEY = `${EXTENSION_NAME}.currentEnvironment`;
     private environmentChangedEmitter = new vscode.EventEmitter<void>();
 
-    constructor(private storage: vscode.Memento) {
-        this.environments = this.storage.get<Environment[]>(this.ENVIRONMENTS_KEY) || [];
-        this.currentEnvironmentId = this.storage.get<string>(this.CURRENT_ENV_KEY);
+    constructor(
+        private workspaceStorage: vscode.Memento,
+        private globalStorage: vscode.Memento
+    ) {
+        // Try to load from workspace storage first
+        this.environments = this.workspaceStorage.get<Environment[]>(this.ENVIRONMENTS_KEY) || [];
+        this.currentEnvironmentId = this.workspaceStorage.get<string>(this.CURRENT_ENV_KEY);
+
+        // If no environments in workspace storage, check if there are any in global storage
+        // and migrate them to workspace storage
+        if (this.environments.length === 0) {
+            const globalEnvironments = this.globalStorage.get<Environment[]>(this.ENVIRONMENTS_KEY) || [];
+            if (globalEnvironments.length > 0) {
+                this.environments = globalEnvironments;
+                this.currentEnvironmentId = this.globalStorage.get<string>(this.CURRENT_ENV_KEY);
+                
+                // Save to workspace storage
+                this.saveEnvironments();
+                if (this.currentEnvironmentId) {
+                    this.workspaceStorage.update(this.CURRENT_ENV_KEY, this.currentEnvironmentId);
+                }
+                
+                // Clean up global storage
+                this.globalStorage.update(this.ENVIRONMENTS_KEY, undefined);
+                this.globalStorage.update(this.CURRENT_ENV_KEY, undefined);
+                
+                vscode.window.showInformationMessage(
+                    'SQLX Manager: Migrated environments from global to workspace storage.'
+                );
+            }
+        }
     }
 
     get onEnvironmentChanged() {
@@ -88,7 +116,7 @@ export class EnvironmentManager {
         // If the current environment is deleted, unset it
         if (this.currentEnvironmentId === id) {
             this.currentEnvironmentId = undefined;
-            await this.storage.update(this.CURRENT_ENV_KEY, undefined);
+            await this.workspaceStorage.update(this.CURRENT_ENV_KEY, undefined);
         }
 
         await this.saveEnvironments();
@@ -104,13 +132,13 @@ export class EnvironmentManager {
         }
 
         this.currentEnvironmentId = id;
-        await this.storage.update(this.CURRENT_ENV_KEY, id);
+        await this.workspaceStorage.update(this.CURRENT_ENV_KEY, id);
         this.environmentChangedEmitter.fire();
 
         return true;
     }
 
     private async saveEnvironments(): Promise<void> {
-        await this.storage.update(this.ENVIRONMENTS_KEY, this.environments);
+        await this.workspaceStorage.update(this.ENVIRONMENTS_KEY, this.environments);
     }
 }
