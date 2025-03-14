@@ -15,8 +15,8 @@ import {
 } from './lib/constants';
 
 export function activate(context: vscode.ExtensionContext) {
-    // Initialize environment manager
-    const environmentManager = new EnvironmentManager(context.globalState);
+    // Initialize environment manager with both workspace and global storage
+    const environmentManager = new EnvironmentManager(context.workspaceState, context.globalState);
 
     // Initialize command handler
     const commandHandler = new SqlxCommandHandler(environmentManager);

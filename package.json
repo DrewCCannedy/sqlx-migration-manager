@@ -2,7 +2,7 @@
     "name": "sqlx-migration-manager",
     "displayName": "sqlx-migration-manager",
     "description": "Manage SQLX migrations directly from VS Code with multi-environment support",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "repository": {
         "url": "https://github.com/DrewCCannedy/sqlx-migration-manager"
     },
@@ -135,6 +135,9 @@
         "test": "vscode-test",
         "prepare": "husky install"
     },
+    "dependencies": {
+        "uuid": "^11.1.0"
+    },
     "devDependencies": {
         "@types/mocha": "^10.0.10",
         "@types/node": "20.x",
@@ -149,7 +152,6 @@
         "prettier": "3.5.2",
         "ts-loader": "^9.5.2",
         "typescript": "^5.7.3",
-        "uuid": "^11.1.0",
         "webpack": "^5.97.1",
         "webpack-cli": "^6.0.1"
     },
